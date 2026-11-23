@@ -1,22 +1,86 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { obterToken } from '../lib/armazenamentoToken';
 
-export async function apiClient<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
-  
-  const headers = new Headers(options.headers || {});
-  if (!headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
+export const URL_BASE_API = import.meta.env.VITE_API_URL || '/api/v1';
+
+export interface PayloadErroBackend {
+  error?: string;
+  erro?: string;
+  mensagem?: string;
+  message?: string;
+  title?: string;
+  statusCode?: number;
+  status?: number;
+  errors?: Record<string, string[]> | string[];
+}
+
+export class ErroApi extends Error {
+  public readonly codigoStatus: number;
+  public readonly erros?: Record<string, string[]> | string[];
+
+  constructor(
+    mensagem: string,
+    codigoStatus: number,
+    erros?: Record<string, string[]> | string[]
+  ) {
+    super(mensagem);
+    this.name = 'ErroApi';
+    this.codigoStatus = codigoStatus;
+    this.erros = erros;
+  }
+}
+
+function extrairMensagemErro(dados: PayloadErroBackend, status: number): string {
+  if (dados.error) return dados.error;
+  if (dados.mensagem) return dados.mensagem;
+  if (dados.message) return dados.message;
+
+  if (dados.errors) {
+    if (Array.isArray(dados.errors) && dados.errors.length > 0) {
+      return dados.errors[0];
+    }
+    const valores = Object.values(dados.errors).flat();
+    if (valores.length > 0) {
+      return valores[0];
+    }
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
+  if (dados.title) return dados.title;
+  return `Erro HTTP ${status}`;
+}
+
+export async function clienteApi<T>(
+  endpoint: string,
+  opcoes: RequestInit = {}
+): Promise<T> {
+  const endpointNormalizado = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${URL_BASE_API}${endpointNormalizado}`;
+
+  const cabecalhos = new Headers(opcoes.headers || {});
+  if (!cabecalhos.has('Content-Type') && opcoes.body) {
+    cabecalhos.set('Content-Type', 'application/json');
+  }
+
+  const token = obterToken();
+  if (token && !cabecalhos.has('Authorization')) {
+    cabecalhos.set('Authorization', `Bearer ${token}`);
+  }
+
+  const resposta = await fetch(url, {
+    ...opcoes,
+    headers: cabecalhos,
   });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `Erro HTTP ${response.status}`);
+  if (!resposta.ok) {
+    const dadosErro: PayloadErroBackend = await resposta
+      .json()
+      .catch(() => ({}));
+    const mensagem = extrairMensagemErro(dadosErro, resposta.status);
+    throw new ErroApi(mensagem, resposta.status, dadosErro.errors);
   }
 
-  return response.json();
+  if (resposta.status === 204) {
+    return undefined as T;
+  }
+
+  return resposta.json();
 }
