@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import { ROUTES } from '@shared/config';
+import { ROTAS } from '@shared/config';
 import { Header, Footer } from '@widgets/index';
-import { HomePage } from '@pages/index';
+import { HomePage, PaginaLogin, PaginaCadastro } from '@pages/index';
 
-const MainLayout: React.FC = () => {
+const LayoutPrincipal: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-900 text-neutral-100">
+    <div className="min-h-screen flex flex-col bg-night-900 text-white">
       <Header />
       <main className="flex-1 max-w-7xl w-full mx-auto p-6">
         <Outlet />
@@ -20,8 +20,10 @@ export const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path={ROUTES.HOME} element={<HomePage />} />
+        <Route element={<LayoutPrincipal />}>
+          <Route path={ROTAS.INICIO} element={<HomePage />} />
+          <Route path={ROTAS.LOGIN} element={<PaginaLogin />} />
+          <Route path={ROTAS.CADASTRO} element={<PaginaCadastro />} />
         </Route>
       </Routes>
     </BrowserRouter>

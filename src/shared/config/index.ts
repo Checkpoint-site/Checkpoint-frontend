@@ -1,1 +1,1 @@
-export * from './routes';
+export { ROTAS, ROUTES } from './routes';
