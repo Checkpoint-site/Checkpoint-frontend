@@ -1,22 +1,85 @@
-import React from 'react';
-import { Button } from '@shared/ui';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ROTAS } from '@shared/config';
+import {
+  EVENTO_MUDANCA_AUTENTICACAO,
+  decodificarPayloadToken,
+  possuiToken,
+} from '@shared/lib';
+import { Botao } from '@shared/ui';
 
 export const HomePage: React.FC = () => {
+  const [autenticado, setAutenticado] = useState<boolean>(() => possuiToken());
+  const payload = decodificarPayloadToken();
+
+  useEffect(() => {
+    const sincronizarAutenticacao = () => setAutenticado(possuiToken());
+    window.addEventListener(EVENTO_MUDANCA_AUTENTICACAO, sincronizarAutenticacao);
+    return () =>
+      window.removeEventListener(EVENTO_MUDANCA_AUTENTICACAO, sincronizarAutenticacao);
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-neutral-100">
-          Checkpoint
+    <div className="relative flex flex-col items-center justify-center min-h-[70vh] text-center px-4 space-y-8 overflow-hidden">
+      <div
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-fire-500/10 blur-3xl"
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 flex items-center justify-center">
+        <span
+          className="pointer-events-none absolute -left-2 bottom-3 h-2 w-2 rounded-full bg-ember-300 shadow-[0_0_8px_#ffb830] animar-faisca-1"
+          aria-hidden="true"
+        />
+        <span
+          className="pointer-events-none absolute -right-2 bottom-4 h-2 w-2 rounded-full bg-fire-400 shadow-[0_0_8px_#ff6b2b] animar-faisca-2"
+          aria-hidden="true"
+        />
+        <img
+          src="/Images/Icone.png"
+          alt="Logo Checkpoint"
+          className="relative h-28 w-28 object-contain select-none animar-fogo-png"
+        />
+      </div>
+
+      <div className="relative z-10 space-y-3 max-w-2xl">
+        <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-white">
+          Descanse na{' '}
+          <span className="bg-linear-to-r from-fire-400 via-ember-400 to-ember-300 bg-clip-text text-transparent">
+            Fogueira
+          </span>
         </h1>
-        <p className="text-lg text-neutral-400 max-w-xl mx-auto">
-          Esqueleto inicial configurado com Vite, React, TypeScript, Tailwind CSS e Feature-Sliced Design (FSD).
+        <p className="text-base sm:text-lg text-night-300 max-w-xl mx-auto">
+          Descubra, registre, avalie e compartilhe os jogos que marcaram você em
+          uma comunidade feita de jogadores para jogadores.
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
-        <Button variant="primary">Começar</Button>
-        <Button variant="outline">Documentação</Button>
-      </div>
+      {autenticado ? (
+        <div className="relative z-10 rounded-2xl border border-ember-400/30 bg-night-800/80 px-6 py-4 text-sm text-night-300 shadow-lg">
+          Sessão ativa na fogueira
+          {payload?.email ? (
+            <>
+              {' '}
+              como <strong className="text-ember-400">{payload.email}</strong>
+            </>
+          ) : null}
+          .
+        </div>
+      ) : (
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
+          <Link to={ROTAS.CADASTRO}>
+            <Botao variante="primario" tamanho="grande">
+              Criar Conta
+            </Botao>
+          </Link>
+          <Link to={ROTAS.LOGIN}>
+            <Botao variante="contorno" tamanho="grande">
+              Já tenho conta (Entrar)
+            </Botao>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
