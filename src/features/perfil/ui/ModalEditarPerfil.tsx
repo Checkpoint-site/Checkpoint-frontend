@@ -54,7 +54,7 @@ export const ModalEditarPerfil: React.FC<ModalEditarPerfilProps> = ({
 
         <form onSubmit={lidarComSalvar} className="mt-5 space-y-4">
           <CampoTexto
-            label="Nome de Exibição"
+            rotulo="Nome de Exibição"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Seu nome ou gamertag"
@@ -62,7 +62,7 @@ export const ModalEditarPerfil: React.FC<ModalEditarPerfilProps> = ({
           />
 
           <CampoTexto
-            label="URL da Foto de Perfil"
+            rotulo="URL da Foto de Perfil"
             value={fotoPerfil}
             onChange={(e) => setFotoPerfil(e.target.value)}
             placeholder="https://exemplo.com/sua-foto.jpg"
