@@ -10,6 +10,7 @@ import {
   PaginaJogo,
   PaginaAvaliacao,
   PaginaReview,
+  PaginaPerfil,
 } from '@pages/index';
 
 const LayoutVitrine: React.FC = () => {
@@ -28,7 +29,7 @@ const LayoutPrincipal: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-night-900 text-white">
       <Header />
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
         <Outlet />
       </main>
       <Footer />
@@ -62,6 +63,7 @@ export const AppRouter: React.FC = () => {
             <Route path={ROTAS.JOGO} element={<PaginaJogo />} />
             <Route path={ROTAS.AVALIAR_JOGO} element={<PaginaAvaliacao />} />
             <Route path={ROTAS.REVIEW} element={<PaginaReview />} />
+            <Route path={ROTAS.PERFIL} element={<PaginaPerfil />} />
           </Route>
         </Route>
         <Route element={<LayoutPrincipal />}>

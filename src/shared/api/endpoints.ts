@@ -38,9 +38,10 @@ export const ENDPOINTS_API = {
   },
   ESTANTES: {
     ME: '/estantes/me',
-    ALTERAR_JOGO: (
-      tipoEstante: 'favoritos' | 'pretende-jogar',
-      steamAppId: number
-    ) => `/estantes/${tipoEstante}/jogos/${steamAppId}`,
+    MINHAS: '/estantes/me',
+    PROMOCOES_PRETENDE_JOGAR: '/estantes/pretende-jogar/promocoes',
+    ALTERAR_JOGO: (tipo: string, steamAppId: number) => `/estantes/${tipo}/jogos/${steamAppId}`,
+    CONFIG_FAVORITOS: '/estantes/favoritos/configuracoes',
+    CONFIG_PRETENDE_JOGAR: '/estantes/pretende-jogar/configuracoes',
   },
 } as const;

@@ -132,6 +132,17 @@ export const Header: React.FC = () => {
             >
               Minha Estante
             </a>
+            <Link
+              to={ROTAS.PERFIL}
+              className={cn(
+                'rounded-lg px-3 py-1.5 transition-colors whitespace-nowrap font-medium',
+                localizacao.pathname === ROTAS.PERFIL
+                  ? 'text-white bg-night-800/80 border border-night-700/70'
+                  : 'text-night-300 hover:text-white hover:bg-night-800/60'
+              )}
+            >
+              Perfil
+            </Link>
           </nav>
         </div>
 

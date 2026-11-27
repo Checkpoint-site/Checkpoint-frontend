@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
+import { ROTAS } from '@shared/config';
 import { cn } from '@shared/lib';
 import {
   IconeConfiguracoes,
@@ -198,13 +200,9 @@ export const MenuHamburguer: React.FC<MenuHamburguerProps> = ({
                     />
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setAvisoSecao(
-                        'A página de Perfil estará disponível em breve.'
-                      )
-                    }
+                  <Link
+                    to={ROTAS.PERFIL}
+                    onClick={fecharMenu}
                     className="group flex w-full items-center justify-between rounded-2xl border border-night-800 bg-night-950/60 px-4 py-3.5 text-left transition-all duration-200 hover:border-fire-500/40 hover:bg-night-800/90 cursor-pointer"
                   >
                     <div className="flex items-center gap-3.5">
@@ -224,7 +222,7 @@ export const MenuHamburguer: React.FC<MenuHamburguerProps> = ({
                       tamanho={16}
                       className="text-night-400 group-hover:translate-x-0.5 group-hover:text-ember-400 transition-all"
                     />
-                  </button>
+                  </Link>
                 </nav>
 
                 {avisoSecao && (
