@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <defs>
+    <radialGradient id="fundoNoite" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#1e3150" />
+      <stop offset="65%" stop-color="#111d27" />
+      <stop offset="100%" stop-color="#05080f" />
+    </radialGradient>
+    <radialGradient id="brilhoBrasa" cx="50%" cy="95%" r="55%">
+      <stop offset="0%" stop-color="#ff6b2b" stop-opacity="0.28" />
+      <stop offset="60%" stop-color="#ffb830" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ff6b2b" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="silhuetaAnonima" x1="80" y1="34" x2="80" y2="156" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d8e4f8" />
+      <stop offset="55%" stop-color="#94add3" />
+      <stop offset="100%" stop-color="#5a76a3" />
+    </linearGradient>
+    <clipPath id="recorteCircular">
+      <circle cx="80" cy="80" r="80" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#recorteCircular)">
+    <rect width="160" height="160" fill="url(#fundoNoite)" />
+    <rect width="160" height="160" fill="url(#brilhoBrasa)" />
+
+    <!-- Cabeça do bonequinho anônimo -->
+    <circle cx="80" cy="60" r="27" fill="url(#silhuetaAnonima)" />
+
+    <!-- Ombros / corpo arredondado -->
+    <path
+      d="M28 152C28 121.5 50.8 100 80 100C109.2 100 132 121.5 132 152V164H28V152Z"
+      fill="url(#silhuetaAnonima)"
+    />
+  </g>
+</svg>
