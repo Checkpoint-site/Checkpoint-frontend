@@ -82,5 +82,10 @@ export async function clienteApi<T>(
     return undefined as T;
   }
 
-  return resposta.json();
+  const textoResposta = await resposta.text();
+  if (!textoResposta.trim()) {
+    return undefined as T;
+  }
+
+  return JSON.parse(textoResposta) as T;
 }
