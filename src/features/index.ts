@@ -12,3 +12,13 @@ export {
   type CadastroRequestDto,
   type CadastroResponseDto,
 } from './autenticacao';
+
+export {
+  BarraPesquisaExpansivel,
+  CalendarioCheckpoint,
+  formatarDataExibicao,
+  type BarraPesquisaExpansivelProps,
+  type CalendarioCheckpointProps,
+  type FiltroPesquisa,
+  type ParametrosPesquisa,
+} from './pesquisa';
